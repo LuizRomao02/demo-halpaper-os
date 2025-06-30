@@ -165,15 +165,145 @@ async function adicionarPendenciaModal() {
 
 function imprimirOrdemModal() {
   if (!currentModalId) return;
-  const win = window.open();
-  win.document.write(document.querySelector('.modal-content').outerHTML);
-  win.document.close();
-  win.print();
-}
+  const row = allData.find(r => r.id === currentModalId);
+  if (!row) return;
 
-function imprimirOrdem(id) {
-  openModal(id);
-  setTimeout(imprimirOrdemModal, 300);
+  const labels = {
+    id: 'ID OS',
+    data: 'Data',
+    setor: 'Setor',
+    solicitante: 'Solicitante',
+    equipamento: 'Equipamento',
+    motivo: 'Motivo',
+    recebido: 'Recebido Por',
+    nome: 'Executor',
+    tipo: 'Tipo',
+    descricao: 'Descrição',
+    material: 'Material',
+    mao: 'Mão de Obra',
+    tempo_previsto: 'Tempo Previsto (h)',
+    tempo_utilizado: 'Tempo Utilizado (h)',
+    finalizacao: 'Data Final',
+    pendencia: 'Pendência',
+    assinatura: 'Assinatura'
+  };
+
+  const rowsHtml = Object.keys(labels).map(key => {
+    let value = row[key] || '';
+    if (key === 'data' || key === 'finalizacao') {
+      value = formatarDataBR(row[key]);
+    }
+    return `
+      <tr>
+        <th>${labels[key]}</th>
+        <td>${value}</td>
+      </tr>`;
+  }).join('');
+
+  const printHtml = `
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Ordem de Serviço - ${row.id}</title>
+      <style>
+        /* Forçar impressão de cores */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        @media print {
+          @page { margin: 20mm; }
+          body { margin:0; padding:0; }
+        }
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          color: #1b1b1b;
+          background: #fff;
+          margin: 20px;
+        }
+        .logo {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        .logo img {
+          max-width: 140px;
+        }
+        .titulo {
+          text-align: center;
+          font-size: 24px;
+          font-weight: bold;
+          color: #004d40;
+          margin-bottom: 30px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+        }
+        th, td {
+          padding: 10px 12px;
+          border: 1px solid #ccc;
+          text-align: left;
+          vertical-align: top;
+          font-size: 14px;
+        }
+        th {
+          background: #004d40;
+          color: #fff;
+          width: 30%;
+          font-weight: 600;
+        }
+        td {
+          background: #fff;
+          color: #000;
+        }
+        tr:nth-child(even) td {
+          background: #f1f8e9;
+        }
+        .assinaturas {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 50px;
+        }
+        .assinaturas div {
+          width: 45%;
+          text-align: center;
+        }
+        .assinaturas hr {
+          border: none;
+          border-top: 1px solid #999;
+          margin-bottom: 5px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="logo">
+        <img src="settings/Logo.png" alt="Logo Halpaper">
+      </div>
+      <div class="titulo">Ordem de Serviço</div>
+      <table>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+      <div class="assinaturas">
+        <div>
+          <hr>
+          <span>Responsável Técnico</span>
+        </div>
+        <div>
+          <hr>
+          <span>Solicitante</span>
+        </div>
+      </div>
+    </body>
+    </html>`;
+
+  const printWin = window.open('', '_blank');
+  printWin.document.write(printHtml);
+  printWin.document.close();
+  printWin.onload = () => printWin.print();
 }
 
 function filtrar() {

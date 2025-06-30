@@ -424,3 +424,61 @@ details.form-container[open] summary.form-summary::before {
     transform: translateY(0);
   }
 }
+
+
+/*─────────────────────────────────────────
+  Estilos para Impressão
+─────────────────────────────────────────*/
+@media print {
+  /* Exibe apenas o conteúdo do modal (ou da tabela) que você quiser imprimir */
+  body * {
+    visibility: hidden;
+  }
+  /* Se estiver imprimindo a ordem via modal */
+  .modal-content, 
+  .modal-content * {
+    visibility: visible;
+  }
+  /* Posiciona o modal no topo da página */
+  .modal-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  /* Ajustes de tipografia para impressão */
+  .modal-content {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #000;
+    background: #fff;
+  }
+  /* Remove cores de fundo para economizar tinta */
+  .modal-content th,
+  .modal-content td {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  /* Tabela: bordas claramente visíveis */
+  .modal-content table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .modal-content th,
+  .modal-content td {
+    border: 1px solid #333;
+    padding: 4px;
+  }
+  /* Quebra de página entre ordens (se imprimir várias) */
+  .modal-content {
+    page-break-after: always;
+  }
+  /* Oculta elementos que não fazem sentido no papel */
+  .modal-content button,
+  .modal-content .fechar {
+    display: none;
+  }
+}
