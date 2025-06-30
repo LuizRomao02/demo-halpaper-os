@@ -54,7 +54,6 @@ function renderTable() {
     tdA.className = 'acoes';
     tdA.innerHTML = `
       <button class="editar" onclick="openModal(${row.id})">🔍</button>
-      <button class="imprimir" onclick="imprimirOrdem(${row.id})">🖨</button>
       <button class="excluir" onclick="removerOrdem(${row.id})">✖</button>
     `;
     tr.appendChild(tdA);

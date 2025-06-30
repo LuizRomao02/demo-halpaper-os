@@ -13,9 +13,9 @@
   </header>
 
   <main>
-    <!-- Formulário de Cadastro -->
-    <section class="form-container">
-      <h2>Cadastro de Ordem de Serviço</h2>
+    <!-- Accordion para cadastro -->
+    <details class="form-container" id="cadastro-accordion">
+      <summary class="form-summary">Cadastrar Nova Ordem de Serviço</summary>
       <form id="os-form" onsubmit="event.preventDefault(); adicionarOrdem();">
         <div class="form-group">
           <label for="data">Data</label>
@@ -93,7 +93,7 @@
           </button>
         </div>
       </form>
-    </section>
+    </details>
 
     <!-- Lista de Ordens de Serviço -->
     <section class="list-container">
